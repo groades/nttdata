@@ -1,0 +1,2 @@
+# nttdata
+NTT Data Exercise
