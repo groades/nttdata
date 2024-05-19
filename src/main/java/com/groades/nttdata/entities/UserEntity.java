@@ -81,8 +81,5 @@ public class UserEntity implements UserDetails {
         return isactive;
     }
 
-    public void setEmail(){
-
-    }
 }
 

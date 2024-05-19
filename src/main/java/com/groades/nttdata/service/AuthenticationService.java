@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
@@ -30,6 +31,8 @@ public class AuthenticationService {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .phones(request.getPhones())
+                .isactive(true)
+                .last_login(LocalDateTime.now())
                 .build();
 
         Optional<UserEntity> opUser = userRepository.findByEmail(user.getEmail());
@@ -49,6 +52,7 @@ public class AuthenticationService {
                 .last_login(savedUser.getLast_login())
                 .token(jwtToken)
                 .refreshToken(refreshToken)
+                .isactive(savedUser.isEnabled())
                 .build();
     }
 
