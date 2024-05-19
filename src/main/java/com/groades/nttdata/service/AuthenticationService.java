@@ -1,5 +1,6 @@
 package com.groades.nttdata.service;
 
+import com.groades.nttdata.common.DuplicatedUserException;
 import com.groades.nttdata.common.TokenType;
 import com.groades.nttdata.entities.TokenEntity;
 import com.groades.nttdata.entities.UserEntity;
@@ -8,6 +9,7 @@ import com.groades.nttdata.repository.UserRepository;
 import com.groades.nttdata.request.UserRegisterRequest;
 import com.groades.nttdata.response.AuthenticationResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,12 +33,13 @@ public class AuthenticationService {
                 .build();
 
         Optional<UserEntity> opUser = userRepository.findByEmail(user.getEmail());
-        var savedUser = !opUser.isPresent()?
-                userRepository.save(user):
-                opUser.get();
-        System.out.println(savedUser.toString());
-        var jwtToken = jwtService.generateToken(user);
-        var refreshToken = jwtService.generateRefreshToken(user);
+        opUser.ifPresent(s -> {
+                    throw new DuplicatedUserException("El correo ya fue registrado");
+                });
+
+        var savedUser = userRepository.save(user);
+        var jwtToken = jwtService.generateToken(savedUser);
+        var refreshToken = jwtService.generateRefreshToken(savedUser);
         saveUserToken(savedUser, jwtToken);
 
         return AuthenticationResponse.builder()
