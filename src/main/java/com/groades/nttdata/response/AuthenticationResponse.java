@@ -6,14 +6,22 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.UUID;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
 
-    @JsonProperty("access_token")
-    private String accessToken;
+    private UUID id;
+    private LocalDateTime created;
+    private LocalDateTime modified;
+    private LocalDateTime last_login;
+    private String token;
     @JsonProperty("refresh_token")
     private String refreshToken;
+    private Boolean isactive;
 }

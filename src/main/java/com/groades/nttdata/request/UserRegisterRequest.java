@@ -1,6 +1,6 @@
 package com.groades.nttdata.request;
 
-import com.groades.nttdata.resources.Phone;
+import com.groades.nttdata.entities.PhoneEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,5 +17,5 @@ public class UserRegisterRequest {
     private String name;
     private String email;
     private String password;
-    private List<Phone> phones;
+    private List<PhoneEntity> phones;
 }
